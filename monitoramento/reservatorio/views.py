@@ -1,3 +1,7 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+
+def reservatorio(request):
+    template_name = 'reservatorio.html'
+    return render(request, template_name)
