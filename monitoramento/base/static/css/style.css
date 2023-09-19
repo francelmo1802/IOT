@@ -1,0 +1,24 @@
+body {
+    display: flex;
+    margin-top: 60px;
+    background-color: #696969;
+}
+
+h1{
+    color: white;
+    text-align: center;
+}
+
+#container1 {
+    display: flex;
+    flex-direction: column !important;
+}
+
+#container2 {
+    display: flex;
+    flex-direction: column !important;
+}
+
+#table{
+    margin-top: 20px;
+}
