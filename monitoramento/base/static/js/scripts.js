@@ -1,13 +1,13 @@
 const { Liquid, Line, measureTextWidth } = G2Plot;
 const color = ['#F4664A', '#FAAD14', '#FFFF00','#5B8FF9'];
 
-const url = "http://127.0.0.1:8000/telemetria/liquid/"
+const url = "http://127.0.0.1:8000/reservatorio/liquid/"
 fetch(url)
 .then(res=>res.json()) // transforma a resposta em json
 .then(data=>{
       console.log(data['data'])
-      const liquidPlot = new Liquid('container1', {
-      percent: data.data[2].valor,
+      const liquidPlot = new Liquid('liquid', {
+      percent: data.data[3].valor,
       shape:'rect',
       radius: 0.8,
       outline: {
@@ -23,20 +23,20 @@ fetch(url)
     },
       statistic: {
         title: {
-          formatter: () => 'Resevatório',
+          formatter: () => data.data[1].name,
           style: ({ percent }) => ({
             fontSize: 30,
-            fill: percent > 0.58 ? 'white':'rgba(44,53,66,0.85)' ,
+            fill: percent > 0.58 ? 'rgba(44,53,66,0.85)':'white',
           }),
         },
         content: {
           style: ({ percent }) => ({
             fontSize: 60,
             lineHeight: 1,
-            fill: percent > 0.45 ? 'white':'rgba(44,53,66,0.85)',
+            fill: percent > 0.45 ? 'rgba(44,53,66,0.85)':'white',
           }),
-          customHtml: (container, view, { percent }) => {
-            const { width, height } = container.getBoundingClientRect();
+          customHtml: (liquid, view, { percent }) => {
+            const { width, height } = liquid.getBoundingClientRect();
             const d = Math.sqrt(Math.pow(width / 2, 2) + Math.pow(height / 2, 2));
             const text = `${(percent * 100).toFixed(0)}%`;
             const textWidth = measureTextWidth(text, { fontSize: 60 });
@@ -59,17 +59,18 @@ fetch(url)
 });
 
 //----------------------------------------------------------------------------------------
-const url2 = "http://127.0.0.1:8000/telemetria/linha/"
+const url2 = "http://127.0.0.1:8000/reservatorio/linha/"
 fetch(url2)
   .then((res) => res.json()) // transforma a resposta em json
   .then((data) => {
     console.log(data)
     // Filtrar os dados para obter apenas a última data
-//    const lastDate = data[data.length - 1].date;
-//    const filteredData = data.filter(item => item.date === lastDate);
+    const lastDate = data[data.length - 1].date;
+    const filteredData = data.filter(item => item.date === lastDate);
 
-    const line = new Line('container2', {
+    const line = new Line('line', {
         data: filteredData,
+        // data: data,
         padding: 'auto',
         xField: 'time',
         yField: 'value',
